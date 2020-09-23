@@ -81,6 +81,8 @@ JDK1.8、Maven、Mysql、Redis、IntelliJ IDEA、minio、fastdfs、OpenOffice
 
 - 测试账号：admin 密码：111111
 
+- 最后如果不想安装各种依赖，请切换分支到纯净版
+
 ## 演示图
 
 
