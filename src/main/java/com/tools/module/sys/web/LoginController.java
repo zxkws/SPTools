@@ -4,12 +4,10 @@ import com.tools.common.model.Result;
 import com.tools.common.util.MD5Utils;
 import com.tools.common.util.RedisUtil;
 import com.tools.common.util.ShiroUtils;
-import com.tools.module.app.util.CaptchaUtils;
 import com.tools.module.sys.entity.SysUser;
 import com.tools.module.sys.service.SysUserService;
 import io.swagger.annotations.Api;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,8 +30,6 @@ public class LoginController {
     private SysUserService sysUserService;
     @Autowired
     private RedisUtil redisUtil;
-    @Autowired
-    private CaptchaUtils captchaUtils;
 
     /**
      * 登录
@@ -42,14 +38,10 @@ public class LoginController {
     @ResponseBody
     public Result login(String username, String password,String ticket,String randstr){
         try{
-            if(captchaUtils.check(ticket,randstr)){
-                Subject subject = ShiroUtils.getSubject();
-                password = MD5Utils.encrypt(username, password);
-                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-                subject.login(token);
-            }else{
-                return Result.error("人机验证失败");
-            }
+            Subject subject = ShiroUtils.getSubject();
+            password = MD5Utils.encrypt(username, password);
+            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+            subject.login(token);
         }catch (Exception e) {
             e.printStackTrace();
             return Result.error("登录失败");
